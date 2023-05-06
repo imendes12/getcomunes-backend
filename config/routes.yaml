@@ -1,0 +1,8 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+ola_mundo:
+    path: /ola
+    controller: App\Controller\OlaMundoController::olaMundoAction
