@@ -17,7 +17,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: .docker/php/dockerfile
+      dockerfile: .docker/php/Dockerfile
     container_name: getcomunes-backend-app
     environment:
       APP_ENV: ${APP_ENV}

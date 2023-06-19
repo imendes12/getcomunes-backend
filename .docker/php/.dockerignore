@@ -1,0 +1,5 @@
+# Arquivos e diretórios a serem ignorados durante a cópia para o contêiner Docker
+
+# Diretórios de cache e log do Symfony
+/var/cache/
+/var/log/

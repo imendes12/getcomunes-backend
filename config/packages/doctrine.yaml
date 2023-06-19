@@ -1,0 +1,13 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+        user: '%env(resolve:POSTGRES_USER)%'
+        password: '%env(resolve:POSTGRES_PASSWORD)%'
+        driver: pgsql
+        server_version: '15'
+        charset: utf-8
+
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
