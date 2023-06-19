@@ -8,30 +8,28 @@ RUN apk update \
        oniguruma-dev \
        libzip-dev \
        unzip \
-       git
+       git \
+       postgresql-dev
 
 # Instala as extensões do PHP necessárias
-RUN docker-php-ext-install pdo_mysql zip
+RUN docker-php-ext-install pdo_pgsql zip
 
 # Instala as dependências do Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Define as permissões de usuário
-RUN mkdir -p /var/www/project
-RUN chown -R www-data:www-data /var/www/project
-RUN chmod 755 /var/www/project
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod 755 /var/www/html
 
 # Define o diretório de trabalho
-WORKDIR /var/www/project
+WORKDIR /var/www/html
 
 # Copia o arquivo de configuração personalizado do PHP
 COPY .docker/php/php.ini /usr/local/etc/php/conf.d/
 
-# Copia o código-fonte do projeto para a imagem
-COPY . .
-
 # Instala as dependências do projeto
+COPY composer.json composer.lock ./
 RUN composer install --no-scripts --no-progress --prefer-dist --optimize-autoloader
 
-# Define o usuário padrão do contêiner
-USER www-data
+# Copia o código-fonte do projeto para a imagem
+COPY . .
