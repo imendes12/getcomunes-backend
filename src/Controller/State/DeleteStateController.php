@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Region;
+namespace App\Controller\State;
 
-use App\Entity\Region;
+use App\Entity\State;
 use App\Helper\EntityManagerCreator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DeleteRegionController
+class DeleteStateController
 {
     /**
-     * @Route("/deleteregion/{id}")
+     * @Route("/deletestate/{id}")
      */
-    public function deleteRegion(int $id)
+    public function deleteState(int $id)
     {
         $entityManager = EntityManagerCreator::createEntityManager();
 
-        $region = $entityManager->find(Region::class, $id);
+        $state = $entityManager->find(State::class, $id);
 
-        $entityManager->remove($region);
+        $entityManager->remove($state);
         $entityManager->flush();
 
         $response = [

@@ -4,33 +4,36 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Region;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 #[Entity]
-class Region
+class State
 {
     #[Id, GeneratedValue, Column]
     private int $id;
 
-    #[OneToMany(targetEntity: State::class, mappedBy: 'region', cascade: ['persist', 'remove'])]
-    private Collection $states;
+    #[ManyToOne(targetEntity: Region::class, inversedBy: 'states')]
+    private Region $region;
 
     public function __construct(
         #[Column]
         private string $name
     ) {
-        $this->states = new ArrayCollection();
     }
 
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     public function getName(): string
@@ -43,14 +46,13 @@ class Region
         $this->name = $name;
     }
 
-    public function getStates(): Collection
+    public function getRegion(): Region
     {
-        return $this->states;
+        return $this->region;
     }
 
-    public function addState(State $state): void
+    public function setRegion(Region $region): void
     {
-        $this->states->add($state);
-        $state->setRegion($this);
+        $this->region = $region;
     }
 }
