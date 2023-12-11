@@ -11,25 +11,21 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\ManyToOne;
 
 #[Entity]
-class City
+class Business
 {
     #[Id, GeneratedValue, Column]
     private int $id;
 
-    #[ManyToOne(targetEntity: State::class)]
-    private State $state;
-
-    #[ManyToMany(Business::class, inversedBy: 'cities')]
-    private Collection $business;
+    #[ManyToMany(City::class, mappedBy: 'business')]
+    private Collection $cities;
 
     public function __construct(
         #[Column]
         private string $name
     ) {
-        $this->business = new ArrayCollection();
+        $this->cities = new ArrayCollection();
     }
 
     public function getId(): int
@@ -52,28 +48,18 @@ class City
         $this->name = $name;
     }
 
-    public function getState(): State
+    public function getCities(): Collection
     {
-        return $this->state;
+        return $this->cities;
     }
 
-    public function setState(State $state): void
+    public function addCity(City $city): void
     {
-        $this->state = $state;
-    }
-
-    public function getBusiness(): Collection
-    {
-        return $this->business;
-    }
-
-    public function openBusiness(Business $business): void
-    {
-        if ($this->business->contains($business)) {
+        if ($this->cities->contains($city)) {
             return;
         }
 
-        $this->business->add($business);
-        $business->addCity($this);
+        $this->cities->add($city);
+        $city->openBusiness($this);
     }
 }

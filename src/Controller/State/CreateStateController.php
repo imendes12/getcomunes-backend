@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\State;
 
+use App\Entity\City;
 use App\Entity\Region;
 use App\Entity\State;
 use App\Helper\EntityManagerCreator;
@@ -22,7 +23,9 @@ class CreateStateController
         $region = new Region('Nordeste');
         $region->addState(new State('Alagoas'));
         $region->addState(new State('Bahia'));
-        $region->addState(new State('Ceará'));
+
+        $ceara = new State('Ceará');
+        $region->addState($ceara);
         $region->addState(new State('Maranhão'));
         $region->addState(new State('Paraíba'));
         $region->addState(new State('Pernambuco'));
@@ -30,7 +33,19 @@ class CreateStateController
         $region->addState(new State('Rio Grande do Norte'));
         $region->addState(new State('Sergipe'));
 
+        $fortaleza = new City('Fortaleza');
+        $fortaleza->setState($ceara);
+        
+        $russas = new City('Russas');
+        $russas->setState($ceara);
+
+        $juazeiro = new City('Juazeiro');
+        $juazeiro->setState($ceara);
+
         $entityManager->persist($region);
+        $entityManager->persist($fortaleza);
+        $entityManager->persist($russas);
+        $entityManager->persist($juazeiro);
         $entityManager->flush();
 
         $response = [
